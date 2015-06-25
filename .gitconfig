@@ -1,0 +1,28 @@
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[user]
+	name = Zack Smith
+	email = zack.smith@towerswatson.com
+[core]
+	ignorecase = true
+[diff]
+	renames = copies
+	tool = p4diff
+[http]
+	sslVerify = false
+[alias]
+	a = add -A
+	st = status
+	co = checkout
+	commit = commit -m
+	diff = diff -w
+	pr = remote prune origin
+	fp = fetch -p
+	ci = commit -m
+[push]
+	default = tracking
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
