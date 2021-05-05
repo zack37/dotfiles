@@ -1,0 +1,74 @@
+[includeIf "gitdir:earnest/"]
+        path=.gitconfig-work
+[includeIf "gitdir:personal/"]
+        path=.gitconfig-personal
+[includeIf "gitdir:jaxed/"]
+        path=.gitconfig-personal
+[user]
+	name = Zack Smith
+[push]
+	default = simple
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[core]
+	ignorecase = true
+[diff]
+	renames = copies
+[http]
+	[sslVerify]
+[alias]
+	a = add -A
+	st = status
+	co = checkout
+	diff = diff -w
+	pr = remote prune origin
+	fp = fetch --prune
+	ci = commit -m
+	fixup = "!git commit --fixup=HEAD; git rebase -i --autosquash HEAD~2"
+        update = "!f(){ git fetch origin \"$1\" && git pull --rebase --autostash origin \"$1\"; }; f"
+        cleanup = "!git branch --merged | egrep -v \"(^\\*|master)\" | xargs git branch -d"
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+[credential]
+        helper = osxkeychain
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustexitcode = true
+[mergetool "p4merge"]
+        cmd = /Applications/p4merge.app/Contents/MacOS/p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+        keepTemporaries = false
+        trustExitCode = false
+        keepBackup = false
+[difftool "p4merge"]
+        cmd = /Applications/p4merge.app/Contents/MacOS/p4merge "$LOCAL" "$REMOTE"
+[merge]
+	tool = p4merge
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[difftool]
+	prompt = false
+[mergetool]
+	prompt = false
+        keepBackup = false
+[diff]
+	tool = p4merge
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
