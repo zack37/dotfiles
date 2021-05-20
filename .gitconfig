@@ -1,4 +1,4 @@
-[includeIf "gitdir:earnest/"]
+[includeIf "gitdir:crumbl/"]
         path=.gitconfig-work
 [includeIf "gitdir:personal/"]
         path=.gitconfig-personal

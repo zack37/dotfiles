@@ -1,2 +1,5 @@
 [user]
-        email = "zack.smith@earnest.com"
+        email = "zack.smith@crumbl.com"
+        signingkey = "23A1E27C74C4CFA5"
+[commits]
+        gpgsign = true

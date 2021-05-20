@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/zachsmith/.oh-my-zsh
+export ZSH=/Users/zacksmith/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -90,58 +90,20 @@ source $ZSH/oh-my-zsh.sh
 alias ls="exa -lah"
 alias cask="brew cask"
 
-
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/zachsmith/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/zachsmith/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+[[ -f /Users/zacksmith/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/zacksmith/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/zachsmith/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/zachsmith/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# place this after nvm initialization!
-#autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-#add-zsh-hook chpwd load-nvmrc
-#load-nvmrc
-
+[[ -f /Users/zacksmith/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/zacksmith/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
 
 #export PATH="$PATH:`yarn global bin`"
 export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 
-eclone() {
-  if [ -z $1 ]; then
-    echo "Must provide repository name"
-  else
-    for repo in "$@"
-    do
-      echo "git clone git@github.com:meetearnest/$repo.git ~/projects/earnest/$repo" | sh
-    done
-  fi
-}
-
 brew-update() {
   brew update && brew upgrade --greedy && brew upgrade --cask && brew cleanup
 }
-eval "$(lua ~/projects/forks/z.lua --init zsh)"
+
 dash() {
   open "dash://$1:$2"
 }
@@ -164,9 +126,9 @@ export PATH="/usr/local/sbin:$PATH"
 # fnm
 export PATH=$HOME/.fnm:$PATH
 eval "`fnm env`"
-export PATH=/Users/zachsmith/.fnm/current/bin:$PATH
-export FNM_MULTISHELL_PATH=/Users/zachsmith/.fnm/current
-export FNM_DIR=/Users/zachsmith/.fnm/
+export PATH=/Users/zacksmith/.fnm/current/bin:$PATH
+export FNM_MULTISHELL_PATH=/Users/zacksmith/.fnm/current
+export FNM_DIR=/Users/zacksmith/.fnm/
 export FNM_NODE_DIST_MIRROR=https://nodejs.org/dist
 export FNM_LOGLEVEL=all
 
@@ -188,7 +150,7 @@ export FNM_LOGLEVEL=all
 
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
-[[ -f /Users/zachsmith/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/zachsmit/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh
+[[ -f /Users/zacksmith/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/zachsmit/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh
 
 #export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 #export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -197,24 +159,11 @@ export FNM_LOGLEVEL=all
 #export PATH=$PATH:$ANDROID_HOME/tools/bin
 #export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-export GOPATH=~/.go
-export PATH=$PATH:$GOPATH/src/github.com/meetearnest/pgauth
-export PATH=$PATH:$GOPATH/bin
-
-# For gogo tab completion
-#pyenv local 3.7.3
-eval "$(pyenv exec register-python-argcomplete gogo)"
-
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
 eval "$(thefuck --alias --enable-experimental-instant)"
-#alias dockernuke="docker ps -aq | xargs docker stop | xargs docker rm"
 alias dockernuke="docker system prune -a --volumes --force"
 
-
-# For gogodb tab completion
-#eval "$(PATH="$PYENV_ROOT/versions/3.7.3/bin:$PATH" pyenv exec register-python-argcomplete gogodb)"
-#
 eval "$(starship init zsh)"
