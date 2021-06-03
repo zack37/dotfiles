@@ -152,6 +152,7 @@ export FNM_LOGLEVEL=all
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /Users/zacksmith/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/zachsmit/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh
 
+export JAVA_HOME=/Applications/Android\ Studio\ Preview.app/Contents/jre/Contents/Home
 #export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 #export ANDROID_HOME=$HOME/Library/Android/sdk
 #export PATH=$PATH:$ANDROID_HOME/emulator
@@ -163,7 +164,7 @@ export FNM_LOGLEVEL=all
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
-eval "$(thefuck --alias --enable-experimental-instant)"
+eval $(thefuck --alias)
 alias dockernuke="docker system prune -a --volumes --force"
 
 eval "$(starship init zsh)"

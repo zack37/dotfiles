@@ -68,7 +68,13 @@
         keepBackup = false
 [diff]
 	tool = p4merge
+	colorMoved = zebra
 [pull]
 	rebase = true
 [init]
 	defaultBranch = main
+[fetch]
+	prune = true
+[rebase]
+	autostash = true
+	autoSquash = true
