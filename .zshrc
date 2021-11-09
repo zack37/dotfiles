@@ -8,6 +8,7 @@ export ZSH=/Users/zacksmith/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="powerlevel9k/powerlevel9k"
+
 #POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 #POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(background_jobs node_version)
 
@@ -117,10 +118,6 @@ cloc-git() {
   rm -rf temp-linecount-repo
 }
 
-# fnm
-export PATH=$HOME/.fnm:$PATH
-eval `fnm env`
-
 export PATH="/usr/local/sbin:$PATH"
 
 # fnm
@@ -154,11 +151,11 @@ export FNM_LOGLEVEL=all
 
 export JAVA_HOME=/Applications/Android\ Studio\ Preview.app/Contents/jre/Contents/Home
 #export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-#export ANDROID_HOME=$HOME/Library/Android/sdk
+export ANDROID_HOME=$HOME/Library/Android/sdk
 #export PATH=$PATH:$ANDROID_HOME/emulator
 #export PATH=$PATH:$ANDROID_HOME/tools
 #export PATH=$PATH:$ANDROID_HOME/tools/bin
-#export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # tabtab source for packages
 # uninstall by removing these lines
@@ -168,3 +165,40 @@ eval $(thefuck --alias)
 alias dockernuke="docker system prune -a --volumes --force"
 
 eval "$(starship init zsh)"
+
+# ANTIGEN PACKAGES
+source $(brew --prefix)/share/antigen/antigen.zsh
+antigen use oh-my-zsh
+
+antigen bundle docker-compose
+antigen bundle git
+antigen bundle z
+antigen bundle changyuheng/fz
+antigen bundle Aloxaf/fzf-tab
+antigen bundle zsh-users/zsh-syntax-highlighting
+# antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle colored-man-pages
+antigen bundle unixorn/autoupdate-antigen.zshplugin
+antigen bundle MichaelAquilina/zsh-you-should-use
+antigen bundle akoenig/npm-run.plugin.zsh
+antigen bundle zsh-users/zsh-history-substring-search
+
+antigen cache-gen
+
+case `uname` in
+  Darwin)
+    # Commands for OS X go here
+    antigen bundle osx
+  ;;
+  Linux)
+    # Commands for Linux go here
+  ;;
+esac
+
+# workaround for https://github.com/zsh-users/antigen/issues/675
+THEME=robbyrussell
+
+antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
+# antigen theme robbyrussell
+
+antigen apply
