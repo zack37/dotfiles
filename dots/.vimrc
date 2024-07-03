@@ -9,6 +9,7 @@ Plugin 'wting/rust.vim'
 Plugin 'tpope/vim-fugitive' 
 Plugin 'itchyny/lightline.vim' 
 Plugin 'timonv/vim-cargo' 
+Plugin 'Mofiqul/vscode.nvim'
 
 call vundle#end()
 filetype plugin indent on
@@ -44,6 +45,7 @@ set cmdheight=2
 
 set showmatch
 set number
+set relativenumber
 set ttyfast
 set ruler
 
@@ -54,3 +56,6 @@ set t_Co=256
 set background=dark
 
 nmap <SPACE> :noh<ENTER>
+
+nnoremap ; :
+command! W write

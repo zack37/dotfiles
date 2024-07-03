@@ -55,10 +55,21 @@ export ZSH=/Users/zacksmith/.oh-my-zsh
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git npm thefuck yarn)
+plugins=(git npm thefuck yarn z)
 autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
+
+upfind() {
+  while [[ "$PWD" != / ]]; do
+    res=$(find "$PWD" -maxdeptch 1 -type f -iname "$1")
+    if [[ ! -z "$res" ]]; then
+      echo "$res"
+      exit 0
+    fi
+    cd ..
+  done
+}
 
 # User configuration
 
@@ -88,7 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls="exa -lah"
+alias ls="lsd -lah"
 alias cask="brew cask"
 
 # tabtab source for serverless package
@@ -102,7 +113,19 @@ alias cask="brew cask"
 export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 
 brew-update() {
-  brew update && brew upgrade --greedy && brew upgrade --cask && brew cleanup
+  brew update && brew upgrade --formulae && brew cleanup
+}
+
+vundle-update() {
+  vim +PluginUpdate +qall
+}
+
+antigen-update() {
+  antigen update
+}
+
+update-all() {
+  brew-update && vundle-update && antigen-update
 }
 
 dash() {
@@ -114,7 +137,7 @@ export PATH=$PATH:~/flutter/bin
 cloc-git() {
   git clone --depth 1 "$1" temp-linecount-repo &&
   printf "('temp-linecount-repo' will be deleted automatically)\n\n\n" &&
-  cloc temp-linecount-repo &&
+  scc temp-linecount-repo &&
   rm -rf temp-linecount-repo
 }
 
@@ -122,39 +145,25 @@ export PATH="/usr/local/sbin:$PATH"
 
 # fnm
 export PATH=$HOME/.fnm:$PATH
-eval "`fnm env`"
+eval "`fnm env --use-on-cd`"
 export PATH=/Users/zacksmith/.fnm/current/bin:$PATH
 export FNM_MULTISHELL_PATH=/Users/zacksmith/.fnm/current
 export FNM_DIR=/Users/zacksmith/.fnm/
 export FNM_NODE_DIST_MIRROR=https://nodejs.org/dist
 export FNM_LOGLEVEL=all
-
-      autoload -U add-zsh-hook
-      _fnm_autoload_hook () {
-        if [[ -f .node-version && -r .node-version ]]; then
-          echo "fnm: Found .node-version"
-          fnm use
-        elif [[ -f .nvmrc && -r .nvmrc ]]; then
-          echo "fnm: Found .nvmrc"
-          fnm use
-          export NODE_VERSION=$(node -v)
-        fi
-      }
-
-      add-zsh-hook chpwd _fnm_autoload_hook \
-        && _fnm_autoload_hook
-    
+export FNM_COREPACK_ENABLED=true
+export FNM_RESOLVE_ENGINES=true
 
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /Users/zacksmith/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/zachsmit/projects/vslr/lunchbot/node_modules/tabtab/.completions/slss.zsh
 
-export JAVA_HOME=/Applications/Android\ Studio\ Preview.app/Contents/jre/Contents/Home
-#export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+#export JAVA_HOME=/Applications/Android\ Studio\ Preview.app/Contents/jre/Contents/Home
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 export ANDROID_HOME=$HOME/Library/Android/sdk
-#export PATH=$PATH:$ANDROID_HOME/emulator
-#export PATH=$PATH:$ANDROID_HOME/tools
-#export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # tabtab source for packages
@@ -202,3 +211,39 @@ antigen list | grep $THEME; if [ $? -ne 0 ]; then antigen theme $THEME; fi
 # antigen theme robbyrussell
 
 antigen apply
+
+listening() {
+  sudo lsof -i -P | grep LISTEN
+}
+# kill process on port lol
+kpop() {
+  if [ $# -eq 0 ]; then
+    echo "Must provide a port"
+    return
+  fi
+
+  lsof -ti ":$1" | xargs kill -9
+}
+
+nukenm() {
+  find . -name "node_modules" -type d -prune -print -exec rm -rf '{}' \;
+}
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH=$(brew --prefix openssl)/bin:$PATH
+export PATH="$HOME/.rover/bin:$PATH"
+
+export CRUMBL_ROOT="~/projects/crumbl/crumbl"
+alias yarnx="rm -rf node_modules && yarn install"
+alias retype="pushd $CRUMBL_ROOT/packages/types >/dev/null && yarn build && popd >/dev/null && yarnx"
+export GPG_TTY=$(tty)
+
+# bun completions
+[ -s "/Users/zacksmith/.bun/_bun" ] && source "/Users/zacksmith/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "$(zoxide init zsh)"
+

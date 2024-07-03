@@ -4,10 +4,15 @@
         path=.gitconfig-personal
 [includeIf "gitdir:jaxed/"]
         path=.gitconfig-personal
+[includeIf "gitdir:forks/"]
+        path=.gitconfig-personal
 [user]
 	name = Zack Smith
+	email = zack.t.smith37@gmail.com
+	signingkey = D6C4C4977DD89A23
 [push]
 	default = simple
+	autoSetupRemote = true
 [color]
 	branch = auto
 	diff = auto
@@ -26,6 +31,7 @@
 	smudge = git-media-smudge %f
 [core]
 	ignorecase = true
+        pager = delta
 [diff]
 	renames = copies
 [http]
@@ -38,9 +44,17 @@
 	pr = remote prune origin
 	fp = fetch --prune
 	ci = commit -m
+        undo = "!f() { git reset HEAD~$1 --soft; }; f"
 	fixup = "!git commit --fixup=HEAD; git rebase -i --autosquash HEAD~2"
         update = "!f(){ git fetch origin \"$1\" && git pull --rebase --autostash origin \"$1\"; }; f"
         cleanup = "!git branch --merged | egrep -v \"(^\\*|master)\" | xargs git branch -d"
+        wip = "!f() { \
+                if [ \"$(git log -1 --pretty=%B)\" = \"wip\" ]; then \
+                  git add -A && git commit --amend --no-edit --no-verify; \
+                else \
+                  git add -A && git commit -m \"wip\" --no-verify; \
+                fi \
+        }; f"
 [filter "lfs"]
 	clean = git lfs clean %f
 	smudge = git lfs smudge %f
@@ -55,6 +69,8 @@
         keepTemporaries = false
         trustExitCode = false
         keepBackup = false
+[mergetool "code"]
+        cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 [difftool "p4merge"]
         cmd = /Applications/p4merge.app/Contents/MacOS/p4merge "$LOCAL" "$REMOTE"
 [merge]
@@ -68,7 +84,7 @@
         keepBackup = false
 [diff]
 	tool = p4merge
-	colorMoved = zebra
+	colorMoved = default
 [pull]
 	rebase = true
 [init]
@@ -78,17 +94,19 @@
 [rebase]
 	autostash = true
 	autoSquash = true
-[pager]
-        diff = delta
-        log = delta
-        reflog = delta
-        show = delta
 [delta]
         features = side-by-side line-numbers decorations dark
-        plus-style = syntax "#003800"
-        minus-style = syntax "#3f0001"
+        plus-style = "syntax #003800"
+        minus-style = "syntax #3f0001"
         syntax-theme = Monokai Extended
         navigate = true
+        true-color = always
+        hyperlinks = true
+        hyperlinks-file-link-format = "vscode://file/{path}:{line}"
 
 [interactive]
         diffFilter = delta --color-only
+[commit]
+	gpgsign = false
+[rerere]
+	enabled = true
